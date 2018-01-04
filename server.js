@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const app = express();
 
-const port = process.env.PORT || 3030
+const PORT = process.env.PORT || 3030;
 
 // Node Server Routes ABOVE Webpack.
 app.get("/hello", (req, res) => {
@@ -20,9 +20,9 @@ if (process.env.NODE_ENV !== "production") {
 } else {
 	app.use(express.static("dist"));
 	app.get("*", (req, res) => {
-		res.sendFile(path.join(__dirname, "dist/index.html"));
+		res.sendFile(path.join(__dirname, "dist", "index.html"));
 	});
 }
 
 console.log("NODE_ENV", process.env.NODE_ENV);
-app.listen(port, () => console.log("Listening on port: ", port));
+app.listen(PORT, () => console.log("Listening on port: ", PORT));
