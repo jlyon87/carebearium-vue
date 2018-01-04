@@ -1,12 +1,25 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+const VENDOR_LIBS = [
+	"axios",
+	"vue",
+	"vue-router",
+	"vuelidate",
+	"vuetify",
+	"vuex"
+];
 
 module.exports = {
-	entry: './src/main.js',
+	entry: {
+		bundle: './src/main.js',
+		vendor: VENDOR_LIBS
+	},
 	output: {
-		path: path.resolve(__dirname, './dist'),
-		publicPath: '/dist/',
-		filename: 'build.js'
+		path: path.resolve(__dirname, 'dist'),
+		filename: 'js/[name].[hash].js'
 	},
 	module: {
 		rules: [
@@ -21,6 +34,7 @@ module.exports = {
 				test: /\.vue$/,
 				loader: 'vue-loader',
 				options: {
+					extractCSS: true,
 					loaders: {}
 					// other vue-loader options go here
 				}
@@ -34,11 +48,25 @@ module.exports = {
 				test: /\.(png|jpg|gif|svg)$/,
 				loader: 'file-loader',
 				options: {
-					name: '[name].[ext]?[hash]'
+					name: 'assets/[name].[ext]?[hash]'
 				}
 			}
 		]
 	},
+	plugins: [
+		new ExtractTextPlugin("css/style.css"),
+		new webpack.optimize.CommonsChunkPlugin({
+			names: ["vendor", "manifest"]
+		}),
+		new HtmlWebpackPlugin({
+			template: "index.html"
+		}),
+		new webpack.DefinePlugin({
+			'process.env': {
+				NODE_ENV: '"production"'
+			}
+		})
+	],
 	resolve: {
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js'
@@ -54,17 +82,12 @@ module.exports = {
 		hints: false
 	},
 	devtool: '#eval-source-map'
-}
+};
 
 if (process.env.NODE_ENV === 'production') {
 	module.exports.devtool = '#source-map'
 	// http://vue-loader.vuejs.org/en/workflow/production.html
 	module.exports.plugins = (module.exports.plugins || []).concat([
-		new webpack.DefinePlugin({
-			'process.env': {
-				NODE_ENV: '"production"'
-			}
-		}),
 		new webpack.optimize.UglifyJsPlugin({
 			sourceMap: true,
 			compress: {
