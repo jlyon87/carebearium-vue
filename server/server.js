@@ -5,15 +5,13 @@ const app = express();
 const PORT = process.env.PORT || 3030;
 
 // Node Server Routes ABOVE Webpack.
-app.get("/hello", (req, res) => {
-	res.send({ hi: "there" });
-});
+require("./routes")(app);
 
 // Webpack Comes last.
 if (process.env.NODE_ENV !== "production") {
 	const webpackMiddleware = require("webpack-dev-middleware");
 	const webpack = require("webpack");
-	const webpackConfig = require("./webpack.config.js");
+	const webpackConfig = require("../webpack.config.js");
 
 	app.use(webpackMiddleware(webpack(webpackConfig)));
 
