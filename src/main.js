@@ -1,21 +1,16 @@
 import Vue from 'vue';
-import App from './App.vue';
-
 import Vuetify from "vuetify";
 import "../node_modules/vuetify/dist/vuetify.min.css";
-
+import Vuelidate from "vuelidate";
 import VueRouter from "vue-router";
 
-import routes from "./routes";
+import App from './App.vue';
+import router from "./routes";
 import store from "./store/store";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
-
-const router = new VueRouter({
-	routes,
-	mode: "history"
-});
+Vue.use(Vuelidate);
 
 new Vue({
 	el: '#app',

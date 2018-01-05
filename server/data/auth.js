@@ -14,8 +14,18 @@ module.exports = rDB => {
 			.run(conn);
 	};
 
+	const login = (conn, { email, password }) => {
+		return rDB.table("users")
+			.filter({
+				email,
+				password
+			})
+			.run(conn);
+	};
+
 	return {
 		queryUserByEmail,
-		insertUser
+		insertUser,
+		login
 	};
 };

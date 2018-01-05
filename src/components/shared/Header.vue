@@ -21,6 +21,10 @@
 			exact>
 		Sign In</v-btn>
 
+		<v-btn v-if="isAuth" flat
+			@click="logout">
+		Logout</v-btn>
+
 	</v-toolbar-items>
 		<!-- <v-switch class="px-auto py-auto mx-auto my-auto"
 			:label="theme"
@@ -47,6 +51,9 @@ export default {
 	methods: {
 		themeSwitcher() {
 			this.$store.dispatch("changeTheme");
+		},
+		logout() {
+			this.$store.dispatch("logout");
 		}
 	},
 }
