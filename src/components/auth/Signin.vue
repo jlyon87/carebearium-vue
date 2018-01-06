@@ -24,12 +24,23 @@
 							@blur="$v.password.$touch()"
 							:error="$v.password.$error"
 							:rules="[
-								() => $v.password.required || 'This field is required',
 								() => $v.password.required || 'This field is required']"
 							required ></v-text-field>
+							<div>
+								{{ $v.password.required }}
+							</div>
+							<div>
+								{{
+									isError
+								}}
+							</div>
+
+							<div v-if="isError">
+								{{ errorMessage }}
+							</div>
 
 						<v-btn @click="submit"
-							:disabled="$v.$invalid"
+							:disabled="$v.$invalid && isError"
 							>Login</v-btn>
 					</v-form>
 				</v-card-text>
@@ -40,12 +51,15 @@
 
 <script>
 import { required, email, unique, minLength, sameAs } from "vuelidate/lib/validators";
+import axios from "axios";
 
 export default {
 	data() {
 		return {
 			email: "",
-			password: ""
+			password: "",
+			isError: false,
+			errorMessage: "Invalid username or password."
 		}
 	},
 
@@ -56,15 +70,30 @@ export default {
 		},
 		password: {
 			required
-		}
+		},
 	},
 
 	methods: {
 		submit() {
-			this.$store.dispatch("login", {
+			const formData = {
 				email: this.email,
 				password: this.password
-			});
+			};
+
+			axios.post("/verify", { email: this.email, password: this.password})
+				.then(res => {
+					console.log("verify response", res.data);
+					this.isError = res.data.email === undefined;
+					console.log("this.isError", this.isError);
+					if(!this.isError) {
+						this.$store.dispatch("login", formData);
+					}
+				})
+				.catch(error => console.error(error.message));
+			// this.$store.dispatch("login", {
+			// 	email: this.email,
+			// 	password: this.password
+			// });
 		}
 	}
 }

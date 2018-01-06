@@ -1,19 +1,13 @@
 const rDB = require("rethinkdb");
-const config = require("../config/rethink.config");
+const auth = require("./auth");
 
-const auth = require("./auth")(rDB);
+module.exports = conn => {
 
-const connectRethinkDB = () => {
-	return rDB.connect(config);
-};
-
-const closeDbConnection = conn => {
-	conn.close();
-};
-
-module.exports = {
-	connect: connectRethinkDB,
-	close: closeDbConnection,
-	auth
+	return {
+		auth: auth(rDB, conn),
+		close() {
+			rDB.close(conn);
+		}
+	};
 }
 

@@ -1,31 +1,12 @@
-module.exports = rDB => {
-	const queryUserByEmail = (conn, userEmail) => {
-		return rDB.table("users")
-			.filter({
-				email: userEmail
-			})
-			.pluck("id")
-			.run(conn);
-	};
+module.exports = (rDB, conn) => {
 
-	const insertUser = (conn, user) => {
+	const getUserByEmail = ({ email, password }) => {
 		return rDB.table("users")
-			.insert(user)
-			.run(conn);
-	};
-
-	const login = (conn, { email, password }) => {
-		return rDB.table("users")
-			.filter({
-				email,
-				password
-			})
+			.get(email)
 			.run(conn);
 	};
 
 	return {
-		queryUserByEmail,
-		insertUser,
-		login
+		getUserByEmail
 	};
 };

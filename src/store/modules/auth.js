@@ -1,5 +1,5 @@
-import axios from "../../data";
 import router from "../../routes";
+import axios from "../../data";
 
 const state = {
 	user: {},
@@ -8,8 +8,8 @@ const state = {
 
 const getters = {
 	isAuthenticated(state) {
-		console.log("state.user.id", state.user.id);
-		return state.user.id !== undefined;
+		console.log("state.user.id", state.user.email);
+		return state.user.email !== undefined;
 	},
 };
 
@@ -27,8 +27,8 @@ const actions = {
 	login({ commit, dispatch }, creds) {
 		axios.post("/verify", creds)
 			.then(res => {
-				console.log(res.data);
-				if(!res.data.id) {
+				console.log("login response data", res.data);
+				if(!res.data.email) {
 					throw new Error("Invalid username or password")
 				};
 

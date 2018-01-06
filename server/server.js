@@ -1,12 +1,17 @@
 const path = require("path");
 const express = require("express");
 const app = express();
-
+const rDB = require("rethinkdb");
+const rDBConfig = require("./config/rethink.config");
 const PORT = process.env.PORT || 3030;
 
-// Node Server Routes ABOVE Webpack.
-require("./routes")(app);
+rDB.connect(rDBConfig)
+	.then(conn => {
+		require("./routes")(app, conn);
+	})
+	.catch(err => console.error(err.message));
 
+// Node Server Routes ABOVE Webpack.
 // Webpack Comes last.
 if (process.env.NODE_ENV !== "production") {
 	const webpackMiddleware = require("webpack-dev-middleware");
