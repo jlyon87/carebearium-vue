@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 
 const auth = (app, dataAccess) => {
-
+	console.log("init auth routes");
 	app.post("/registered", (req, res) => {
 		const { email } = req.body;
 		dataAccess.auth.getUserByEmail(email)
