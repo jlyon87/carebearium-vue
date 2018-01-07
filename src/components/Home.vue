@@ -5,7 +5,7 @@
 				<v-card-title>Home</v-card-title>
 
 				<v-card-text>
-					Welcome!
+					Welcome! {{ userEmail }}
 				</v-card-text>
 			</v-card>
 		</v-flex>
@@ -18,6 +18,12 @@ export default {
 		return {
 			email: "",
 			password: ""
+		}
+	},
+
+	computed: {
+		userEmail() {
+			return this.$store.getters.user.email;
 		}
 	}
 }

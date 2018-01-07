@@ -11,6 +11,9 @@ const getters = {
 		console.log("state.user.email", state.user.email);
 		return state.user.email !== undefined;
 	},
+	user() {
+		return state.user;
+	}
 };
 
 const mutations = {
