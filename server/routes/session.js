@@ -15,6 +15,13 @@ const store = new RDBStore(r, {
 	table: "session"
 });
 
+const readCookie = (req, res, next) => {
+	if(req.session.cookie) {
+		console.log("req.session.cookie", req.session.cookie);
+	}
+	next();
+};
+
 const pageCounter = (req, res, next) => {
 	if (!req.session.views) {
 		req.session.views = {};
@@ -43,5 +50,6 @@ module.exports = (app) => {
 		name: "carebearium.connect.sid"
 	}));
 
+	app.use("/", readCookie);
 	app.use("/", pageCounter);
 }
