@@ -29,8 +29,8 @@
 							required ></v-text-field>
 
 						<v-btn @click="submit"
-							:disabled="$v.$invalid"
-							>Login</v-btn>
+							:disabled="$v.$invalid" >
+							Login</v-btn>
 					</v-form>
 				</v-card-text>
 			</v-card>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { required, email, unique, minLength, sameAs } from "vuelidate/lib/validators";
+import { required, email } from "vuelidate/lib/validators";
 import axios from "axios";
 
 export default {
@@ -72,24 +72,14 @@ export default {
 
 			axios.post("/verify", { email: this.email, password: this.password})
 				.then(res => {
-					console.log("verify response", res.data);
 					this.isError = res.data.email === undefined;
-					this.$v.password.$touch();
-					console.log("this.isError", this.isError);
 					if(!this.isError) {
 						this.$store.dispatch("login", formData);
 					} else { 
 						this.errorMessage = "Invalid username or password.";
 					}
 				})
-				.catch(error => console.error(error.message))
-				.finally(() => {
-					//this.$v.password.$touch();
-				});
-			// this.$store.dispatch("login", {
-			// 	email: this.email,
-			// 	password: this.password
-			// });
+				.catch(error => console.error(error.message));
 		}
 	}
 }

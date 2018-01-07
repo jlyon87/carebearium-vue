@@ -20,18 +20,12 @@ const mutations = {
 };
 
 const actions = {
-	signup({ commit }, user) {
-
-	},
-
-	login({ commit, dispatch }, creds) {
-		axios.post("/verify", creds)
+	login({ commit }, creds) {
+		axios.post("/login", creds)
 			.then(res => {
-				console.log("login response data", res.data);
 				if(!res.data.email) {
 					throw new Error("Invalid username or password")
 				};
-
 				commit("setUser", res.data);
 				router.replace("/");
 			})
