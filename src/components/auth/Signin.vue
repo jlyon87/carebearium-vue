@@ -12,7 +12,7 @@
 							@blur="$v.email.$touch()"
 							:error="$v.email.$error"
 							:rules="[
-								() => $v.email.required || 'This field is required',
+								() => $v.email.required || 'This field is required.',
 								() => $v.email.email || 'Invalid email.']"
 							required ></v-text-field>
 
@@ -24,23 +24,12 @@
 							@blur="$v.password.$touch()"
 							:error="$v.password.$error"
 							:rules="[
-								() => $v.password.required || 'This field is required']"
+								() => $v.password.required || 'This field is required.']"
+							:error-messages="errorMessage"
 							required ></v-text-field>
-							<div>
-								{{ $v.password.required }}
-							</div>
-							<div>
-								{{
-									isError
-								}}
-							</div>
-
-							<div v-if="isError">
-								{{ errorMessage }}
-							</div>
 
 						<v-btn @click="submit"
-							:disabled="$v.$invalid && isError"
+							:disabled="$v.$invalid"
 							>Login</v-btn>
 					</v-form>
 				</v-card-text>
@@ -59,7 +48,7 @@ export default {
 			email: "",
 			password: "",
 			isError: false,
-			errorMessage: "Invalid username or password."
+			errorMessage: undefined
 		}
 	},
 
@@ -75,6 +64,7 @@ export default {
 
 	methods: {
 		submit() {
+			this.errorMessage = undefined;
 			const formData = {
 				email: this.email,
 				password: this.password
@@ -84,12 +74,18 @@ export default {
 				.then(res => {
 					console.log("verify response", res.data);
 					this.isError = res.data.email === undefined;
+					this.$v.password.$touch();
 					console.log("this.isError", this.isError);
 					if(!this.isError) {
 						this.$store.dispatch("login", formData);
+					} else { 
+						this.errorMessage = "Invalid username or password.";
 					}
 				})
-				.catch(error => console.error(error.message));
+				.catch(error => console.error(error.message))
+				.finally(() => {
+					//this.$v.password.$touch();
+				});
 			// this.$store.dispatch("login", {
 			// 	email: this.email,
 			// 	password: this.password

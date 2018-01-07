@@ -8,7 +8,7 @@ const state = {
 
 const getters = {
 	isAuthenticated(state) {
-		console.log("state.user.id", state.user.email);
+		console.log("state.user.email", state.user.email);
 		return state.user.email !== undefined;
 	},
 };
