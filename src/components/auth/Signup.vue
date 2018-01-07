@@ -90,13 +90,12 @@ export default {
 
 	methods: {
 		submit() {
-			this.errorMessage = undefined;
 			const formData = {
 				email: this.email,
 				password: this.password
 			};
 
-			axios.post("/register", { email: this.email, password: this.password})
+			axios.post("/register", formData)
 				.then(res => {
 					if(res.data.inserted === 1) {
 						this.$store.dispatch("login", formData);

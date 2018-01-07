@@ -13,6 +13,9 @@ const VENDOR_LIBS = [
 ];
 
 module.exports = {
+	node: {
+		fs: "empty"
+	},
 	entry: {
 		bundle: './src/main.js',
 		vendor: VENDOR_LIBS
