@@ -24,6 +24,10 @@ export default {
 		isDark() {
 			return this.$store.getters.isDark;
 		}
+	},
+
+	created() {
+
 	}
 }
 </script>

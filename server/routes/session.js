@@ -21,13 +21,6 @@ const store = new RDBStore(r, {
 	table: "session"
 });
 
-const readCookie = (req, res, next) => {
-	if(req.session.cookie) {
-		//console.log("req.session.cookie", req.session.cookie);
-	}
-	next();
-};
-
 const pageCounter = (req, res, next) => {
 	if (!req.session.views) {
 		req.session.views = {};
@@ -35,6 +28,24 @@ const pageCounter = (req, res, next) => {
 
 	const pathname = parseurl(req).pathname;
 	req.session.views[pathname] = (req.session.views[pathname] || 0) + 1;
+	next();
+};
+
+const authGuard = (req, res, next) => {
+	const path = parseurl(req).pathname;
+	console.log("pathname", path);
+	if(!req.session.user && !path.includes("/auth")) {
+
+		if(!req.session.user) {
+			res.status(401)
+		}
+
+		if(!path.includes("/auth")) {
+			res.status(403)
+		}
+
+		next("/");
+	}
 	next();
 };
 
@@ -56,10 +67,6 @@ module.exports = (app) => {
 		name: "carebearium.connect.sid"
 	}));
 
-	app.use("/", readCookie);
 	app.use("/", pageCounter);
-
-	app.get("/hello", (req, res) => {
-
-	});
+	app.use("/", authGuard);
 }

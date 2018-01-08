@@ -25,6 +25,10 @@
 			@click="logout">
 		Logout</v-btn>
 
+		<!-- <v-btn flat
+			@click="sayHi">
+		Hello</v-btn> -->
+
 	</v-toolbar-items>
 		<!-- <v-switch class="px-auto py-auto mx-auto my-auto"
 			:label="theme"
@@ -35,6 +39,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
 	computed: {
 		isDark() {
@@ -54,6 +60,12 @@ export default {
 		},
 		logout() {
 			this.$store.dispatch("logout");
+		},
+
+		sayHi() {
+			axios.get("/hello")
+				.then(res => console.log(res))
+				.catch(err => console.error(err));
 		}
 	},
 }
