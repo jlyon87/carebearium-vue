@@ -7,7 +7,9 @@
 				<v-card-text>
 					Welcome! {{ userEmail }}
 
-					<router-view></router-view>
+					<transition name="slide-y-reverse-transition" mode="out-in">
+						<router-view ></router-view>
+					</transition>
 				</v-card-text>
 			</v-card>
 		</v-flex>
