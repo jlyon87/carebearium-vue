@@ -1,14 +1,17 @@
 const session = require("express-session");
 const parseurl = require("parseurl");
 const RDBStore = require("session-rethinkdb")(session);
+const rdbConfig = require("../config/rethink.config");
+
 const r = require("rethinkdbdash")({
 	servers: [
-		{ host: "localhost", port: 28015, db: "carebearium" }
+		rdbConfig
 	]
 });
 
 const ONE_MINUTE = 1000 * 60;
 const TEN_MINUTES = ONE_MINUTE * 10;
+const SECRET = process.env.SESSION_SECRET || "carebearium-vue";
 
 const store = new RDBStore(r, {
 	browserSessionMaxAge: TEN_MINUTES,
@@ -17,7 +20,7 @@ const store = new RDBStore(r, {
 
 const readCookie = (req, res, next) => {
 	if(req.session.cookie) {
-		console.log("req.session.cookie", req.session.cookie);
+		//console.log("req.session.cookie", req.session.cookie);
 	}
 	next();
 };
@@ -44,7 +47,7 @@ module.exports = (app) => {
 		cookie: {
 			maxAge: TEN_MINUTES
 		},
-		secret: "carebearium-vue",
+		secret: SECRET,
 		resave: true,
 		saveUninitialized: true,
 		name: "carebearium.connect.sid"
@@ -52,4 +55,8 @@ module.exports = (app) => {
 
 	app.use("/", readCookie);
 	app.use("/", pageCounter);
+
+	app.get("/hello", (req, res) => {
+
+	});
 }

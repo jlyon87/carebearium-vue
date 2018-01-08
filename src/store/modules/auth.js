@@ -36,8 +36,15 @@ const actions = {
 	},
 
 	logout({ commit }) {
-		commit("setUser", {});
-		router.replace("/signin");
+		axios.post("/logout")
+		.then(res => {
+			if (res.status !== 200) throw new Error(res.data);
+
+			commit("setUser", {});
+			document.cookie = `name=carebearium.connect.sid;expires=${new Date()};`;
+			router.replace("/signin");
+		})
+		.catch(error => console.error);
 	}
 };
 
