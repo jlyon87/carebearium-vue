@@ -6,6 +6,8 @@
 
 				<v-card-text>
 					Welcome! {{ userEmail }}
+
+					<router-view></router-view>
 				</v-card-text>
 			</v-card>
 		</v-flex>

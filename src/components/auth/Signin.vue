@@ -73,7 +73,7 @@ export default {
 			authInstance.post("/verify", { email: this.email, password: this.password})
 				.then(res => {
 					this.isError = res.data.email === undefined;
-					if(!this.isError) {
+					if(res.status === 200) {
 						this.$store.dispatch("login", formData);
 					} else {
 						this.errorMessage = "Invalid username or password.";

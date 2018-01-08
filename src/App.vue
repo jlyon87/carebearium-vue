@@ -14,6 +14,7 @@
 
 <script>
 import Header from "./components/shared/Header.vue";
+import { authInstance } from "./data";
 
 export default {
 	components: {
@@ -27,7 +28,13 @@ export default {
 	},
 
 	created() {
-
+		authInstance.post("/hasSession")
+			.then(res => {
+				if(res.status === 200) {
+					this.$store.dispatch("autoLogin");
+				}
+			})
+			.catch(err => console.error(err.message));
 	}
 }
 </script>

@@ -69,11 +69,12 @@ export default {
 			required,
 			email,
 			unique: (val) => {
+				console.log("this.email", this.email);
 				if(val === "") return true;
 
 				return authInstance.post("/registered", { email: val })
 					.then(res => {
-						const isNotRegistered = res.data.email === undefined;
+						const isNotRegistered = res.status === 204;
 						return isNotRegistered;
 					})
 					.catch(error => console.error(error.message));
@@ -97,7 +98,7 @@ export default {
 
 			authInstance.post("/register", formData)
 				.then(res => {
-					if(res.data.inserted === 1) {
+					if(res.status === 201) {
 						this.$store.dispatch("login", formData);
 					}
 				})

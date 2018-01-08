@@ -22,6 +22,8 @@ const store = new RDBStore(r, {
 });
 
 const pageCounter = (req, res, next) => {
+	console.log("req.session", req.session);
+	console.log("req.sessionID", req.sessionID);
 	if (!req.session.views) {
 		req.session.views = {};
 	}
@@ -47,6 +49,10 @@ const authGuard = (req, res, next) => {
 		next("/");
 	}
 	next();
+};
+
+const autoLogin = (req, res, next) => {
+	if(req.session.cookie) {}
 };
 
 module.exports = (app) => {
