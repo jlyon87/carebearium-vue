@@ -1,8 +1,9 @@
+const router = require("express").Router();
 const bcrypt = require("bcrypt");
 
-const auth = (app, dataAccess) => {
+const auth = dataAccess => {
 
-	app.post("/registered", (req, res) => {
+	router.post("/registered", (req, res) => {
 		if(!email) {
 			res.status(403).send();
 			return;
@@ -22,7 +23,7 @@ const auth = (app, dataAccess) => {
 			});
 	});
 
-	app.post("/verify", (req, res) => {
+	router.post("/verify", (req, res) => {
 		const { email, password } = req.body;
 
 		dataAccess.auth.getUserByEmail(email)
@@ -51,7 +52,7 @@ const auth = (app, dataAccess) => {
 			});
 	});
 
-	app.post("/register", (req, res) => {
+	router.post("/register", (req, res) => {
 		const { email, password } = req.body;
 		bcrypt.hash(password, 10)
 			.then(hash => {
@@ -66,7 +67,7 @@ const auth = (app, dataAccess) => {
 			});
 	});
 
-	app.post("/login", (req, res) => {
+	router.post("/login", (req, res) => {
 		const { email, password } = req.body;
 		dataAccess.auth.getUserByEmail(email)
 			.then(data => {
@@ -95,7 +96,7 @@ const auth = (app, dataAccess) => {
 			});
 	});
 
-	app.post("/logout", (req, res) => {
+	router.post("/logout", (req, res) => {
 		req.session.destroy(err => {
 			if(err) {
 				res.status(500).send("Error terminating session.");
@@ -105,6 +106,8 @@ const auth = (app, dataAccess) => {
 			res.status(200).send("Success");
 		});
 	});
+
+	return router;
 };
 
 module.exports = auth;

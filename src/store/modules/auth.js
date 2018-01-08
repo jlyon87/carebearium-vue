@@ -1,5 +1,5 @@
 import router from "../../routes";
-import axios from "../../data";
+import { authInstance } from "../../data";
 
 const state = {
 	user: {},
@@ -24,7 +24,7 @@ const mutations = {
 
 const actions = {
 	login({ commit }, creds) {
-		axios.post("/login", creds)
+		authInstance.post("/login", creds)
 			.then(res => {
 				if(!res.data.email) {
 					throw new Error("Invalid username or password")
@@ -36,7 +36,7 @@ const actions = {
 	},
 
 	logout({ commit }) {
-		axios.post("/logout")
+		authInstance.post("/logout")
 		.then(res => {
 			if (res.status !== 200) throw new Error(res.data);
 

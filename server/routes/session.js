@@ -12,6 +12,9 @@ const r = require("rethinkdbdash")({
 const ONE_MINUTE = 1000 * 60;
 const TEN_MINUTES = ONE_MINUTE * 10;
 const SECRET = process.env.SESSION_SECRET || "carebearium-vue";
+const PUBLIC_ROUTES = process.env.PUBLIC_ROUTES || [
+	"/auth"
+];
 
 const store = new RDBStore(r, {
 	browserSessionMaxAge: TEN_MINUTES,

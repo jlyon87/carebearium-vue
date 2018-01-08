@@ -12,7 +12,9 @@ const router = (app, conn) => {
 	app.use(bodyParser.urlencoded({ extended: true }));
 
 	session(app);
-	auth(app, dataAccess);
+
+	const authRouter = auth(dataAccess);
+	app.use("/auth", authRouter);
 };
 
 module.exports = router;

@@ -40,7 +40,7 @@
 
 <script>
 import { required, email } from "vuelidate/lib/validators";
-import axios from "axios";
+import { authInstance } from "../../data";
 
 export default {
 	data() {
@@ -70,12 +70,12 @@ export default {
 				password: this.password
 			};
 
-			axios.post("/verify", { email: this.email, password: this.password})
+			authInstance.post("/verify", { email: this.email, password: this.password})
 				.then(res => {
 					this.isError = res.data.email === undefined;
 					if(!this.isError) {
 						this.$store.dispatch("login", formData);
-					} else { 
+					} else {
 						this.errorMessage = "Invalid username or password.";
 					}
 				})

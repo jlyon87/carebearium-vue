@@ -53,7 +53,7 @@
 
 <script>
 import { required, email, unique, minLength, sameAs } from "vuelidate/lib/validators";
-import axios from "axios";
+import { authInstance } from "../../data";
 
 export default {
 	data() {
@@ -71,7 +71,7 @@ export default {
 			unique: (val) => {
 				if(val === "") return true;
 
-				return axios.post("/registered", { email: val })
+				return authInstance.post("/registered", { email: val })
 					.then(res => {
 						const isNotRegistered = res.data.email === undefined;
 						return isNotRegistered;
@@ -95,7 +95,7 @@ export default {
 				password: this.password
 			};
 
-			axios.post("/register", formData)
+			authInstance.post("/register", formData)
 				.then(res => {
 					if(res.data.inserted === 1) {
 						this.$store.dispatch("login", formData);

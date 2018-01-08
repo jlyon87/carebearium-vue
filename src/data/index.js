@@ -1,9 +1,7 @@
 import axios from "axios";
 
-const baseUrl = process.env.NODE_ENV === "production" ? "" : "localhost:3030";
+const baseURL = process.env.NODE_ENV === "production" ? "" : "http://localhost:3030/auth";
 
-const instance = axios.create({
-	baseUrl
+export const authInstance = axios.create({
+	baseURL,
 });
-
-export default instance;
